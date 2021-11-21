@@ -1,4 +1,5 @@
 ﻿using System;
+using AventStack.ExtentReports;
 using NUnit.Framework;
 using RestApiTesting;
 using RestApiTesting.DTO;
@@ -6,8 +7,8 @@ using RestApiTesting.DTO;
 namespace ApiTests
 {
     [TestFixture]
-    public class ApiTests
-    {
+    public class ApiTests : BaseClass
+    {        
         [Test]
         public void GetListOfUsersTest()
         {
@@ -17,8 +18,11 @@ namespace ApiTests
             ListOfUsersDTO listUsersObject = apiHelper.GetContent<ListOfUsersDTO>(restResponse);
 
             Assert.AreEqual("OK", restResponse.StatusDescription);
-            Assert.AreEqual(200, (int)restResponse.StatusCode);
+            Reporter.LogToReport(Status.Info, $"StatusDescription : {restResponse.StatusDescription}");
+            Assert.AreEqual(200, (int)restResponse.StatusCode, "Stauts code is not correct");
+            Reporter.LogToReport(Status.Info, $"StatusCode : {(int)restResponse.StatusCode}");
             Assert.AreEqual("michael.lawson@reqres.in", listUsersObject.data[0].email);
+            Reporter.LogToReport(Status.Info, $"Email : {listUsersObject.data[0].email}");
         }
 
         [Test]
